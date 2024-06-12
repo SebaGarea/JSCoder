@@ -1,20 +1,47 @@
-
 function convertirCelsiusAFarenheit(numeroIngresado) {
-return(numeroIngresado * 9/5)+32;
+    return (numeroIngresado * 9) / 5 + 32;
+}
+
+class Conversion {
+    constructor(celsius) {
+        this.celsius = celsius;
+        this.fahrenheit = convertirCelsiusAFarenheit(celsius);
+    }
+}
+
+const conversiones = [];
+
+function actualizarHistorial() {
+    const historialDiv = document.getElementById('historial');
+    historialDiv.innerHTML = '';
+
+    conversiones.forEach(i => {
+        const conversionTexto = ` ${i.celsius}°C   =>   ${i.fahrenheit}°F`;
+        const p = document.createElement('p');
+        p.textContent = conversionTexto;
+        historialDiv.appendChild(p);
+    });
 }
 
 function inicioConvertidor() {
-    let celsius = prompt('Ingrese una temperatura en grado CELSIUS')
+    let celsius = document.getElementById('celsiusInput').value;
 
-    if (celsius !==null && !isNaN(celsius)) {
-        celsius = parseFloat(celsius)
-    
-    let fahrenheit = convertirCelsiusAFarenheit(celsius);
+    if (celsius !== null && !isNaN(celsius) && celsius.trim() !== "") {
+        celsius = parseFloat(celsius);
+        const conversion = new Conversion(celsius);
+        conversiones.push(conversion);
 
-    alert(`${celsius} grados Celsius son ${fahrenheit} grados Farenheit`);
-}else{
-    alert('Por favor, ingresa un valor numerico correcto')
+        console.log(`${conversion.celsius} grados Celsius son ${conversion.fahrenheit} grados Fahrenheit`);
+
+        actualizarHistorial();
+    } else {
+        console.log("Por favor, ingresa un valor numérico correcto");
+        alert("Por favor, ingresa un valor numérico correcto");
+    }
 }
-}
-window.onload = inicioConvertidor;
 
+document.getElementById('Btn-convertir').addEventListener('click', inicioConvertidor);
+
+window.onload = function() {
+    document.getElementById('celsiusInput').focus();
+};
